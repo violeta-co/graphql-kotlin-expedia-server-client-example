@@ -1,4 +1,5 @@
 import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
+import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLIntrospectSchemaTask
 
 plugins {
     kotlin("jvm") version "1.6.10"
@@ -43,13 +44,11 @@ graphql {
     client {
         endpoint = "http://localhost:8080/graphql"
         packageName = "graphql.kotlin.expedia.server.client.example.generated"
-
-        allowDeprecatedFields = true
         serializer = GraphQLSerializer.KOTLINX
     }
 }
 
-val graphqlIntrospectSchema by tasks.getting(
-    com.expediagroup.graphql.plugin.gradle.tasks.GraphQLIntrospectSchemaTask::class) {
+val graphqlIntrospectSchema by tasks.getting(GraphQLIntrospectSchemaTask::class) {
     endpoint.set("http://localhost:8080/graphql")
+    outputFile.set(File("./src/main/resources/schema.graphql"))
 }
