@@ -9,11 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
 import io.ktor.util.pipeline.PipelineContext
 
 class KtorGraphQlController {
@@ -31,7 +33,7 @@ class KtorGraphQlController {
         } else {
             runCatching {
                 val json = mapper.writeValueAsString(result)
-                call.respond(json)
+                call.respondText(json, ContentType.Application.Json)
             }.onFailure {
                 call.respond(HttpStatusCode.InternalServerError)
             }

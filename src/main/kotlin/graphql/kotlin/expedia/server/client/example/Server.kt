@@ -9,7 +9,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.post
-import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
@@ -32,12 +31,9 @@ object Server {
         }
 
         routing {
-            route("/graphql") {
-                val controller = KtorGraphQlController()
-
-                post {
-                    controller.handle(this)
-                }
+            val controller = KtorGraphQlController()
+            this.post("/graphql") {
+                controller.handle(this)
             }
         }
     }
